@@ -84,7 +84,7 @@ Feel free to open an issue or submit a pull request.
 **Omkar Parelkar**
 
 - 🔗 LinkedIn: https://www.linkedin.com/in/omkar-parelkar/
-- 🐙 GitHub: https://github.com/omkarparelkar
+
 
 ---
 
