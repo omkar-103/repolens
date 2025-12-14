@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle, AlertCircle } from "lucide-react";
+import { CheckCircle, AlertTriangle, Sparkles, Brain, Lightbulb } from "lucide-react";
 import { GlassCard } from "../ui/GlassCard";
 import { useEffect, useState } from "react";
 
@@ -32,80 +32,151 @@ export function SummarySection({
         setIsTyping(false);
         clearInterval(interval);
       }
-    }, 15);
+    }, 10);
 
     return () => clearInterval(interval);
   }, [summary]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
-    >
-      <GlassCard
-        className="relative overflow-hidden border-l-4 border-l-purple-500"
-        hover={false}
+    <div className="space-y-8">
+      {/* Section Header */}
+      <motion.div
+        className="flex items-center gap-4 mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
       >
-        <h3 className="text-xl font-semibold text-white mb-4">AI Summary</h3>
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+          <Brain className="w-7 h-7 text-white" />
+        </div>
+        <div>
+          <h2 className="text-3xl font-bold text-white font-display">AI Analysis</h2>
+          <p className="text-white/40">Powered by Gemini AI</p>
+        </div>
+      </motion.div>
 
-        <p className="text-white/80 text-lg leading-relaxed mb-6">
-          {displayedText}
-          {isTyping && (
-            <motion.span
-              className="inline-block w-2 h-5 bg-purple-500 ml-1"
-              animate={{ opacity: [1, 0, 1] }}
-              transition={{ duration: 0.8, repeat: Infinity }}
-            />
-          )}
-        </p>
+      {/* AI Summary Card - Full Width */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <GlassCard className="relative" padding="xl" hover={false}>
+          {/* Accent line */}
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500 via-blue-500 to-cyan-500 rounded-l-3xl" />
+          
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+              <Lightbulb className="w-6 h-6 text-purple-400" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2">
+                <h3 className="text-xl font-semibold text-white">Summary</h3>
+                <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-medium">
+                  <Sparkles className="w-3 h-3" />
+                  AI Generated
+                </span>
+              </div>
+            </div>
+          </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Strengths */}
-          <div>
-            <h4 className="text-green-400 font-medium mb-3 flex items-center gap-2">
-              <CheckCircle className="w-5 h-5" />
-              Strengths
-            </h4>
-            <ul className="space-y-2">
+          <p className="text-white/80 text-lg leading-relaxed pl-16">
+            {displayedText}
+            {isTyping && (
+              <motion.span
+                className="inline-block w-0.5 h-6 bg-purple-500 ml-1 align-middle"
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+              />
+            )}
+          </p>
+        </GlassCard>
+      </motion.div>
+
+      {/* Strengths & Weaknesses - Two Column Grid */}
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* Strengths */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <GlassCard className="h-full relative" padding="xl" hover={false}>
+            {/* Top accent */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-t-3xl" />
+            
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center">
+                <CheckCircle className="w-7 h-7 text-green-400" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white font-display">Strengths</h3>
+                <p className="text-white/40 text-sm">What you're doing well</p>
+              </div>
+            </div>
+
+            <ul className="space-y-5">
               {strengths.map((strength, index) => (
                 <motion.li
                   key={index}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1 + index * 0.1 }}
-                  className="flex items-start gap-2 text-white/70"
+                  transition={{ delay: 0.7 + index * 0.15 }}
+                  className="flex items-start gap-4 group"
                 >
-                  <span className="text-green-400 mt-1">•</span>
-                  {strength}
+                  <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-green-500/10 flex items-center justify-center mt-0.5 group-hover:bg-green-500/20 transition-colors">
+                    <span className="w-2 h-2 rounded-full bg-green-400" />
+                  </span>
+                  <span className="text-white/70 text-lg leading-relaxed group-hover:text-white/90 transition-colors">
+                    {strength}
+                  </span>
                 </motion.li>
               ))}
             </ul>
-          </div>
+          </GlassCard>
+        </motion.div>
 
-          {/* Weaknesses */}
-          <div>
-            <h4 className="text-amber-400 font-medium mb-3 flex items-center gap-2">
-              <AlertCircle className="w-5 h-5" />
-              Areas for Improvement
-            </h4>
-            <ul className="space-y-2">
+        {/* Weaknesses */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <GlassCard className="h-full relative" padding="xl" hover={false}>
+            {/* Top accent */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-3xl" />
+            
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center">
+                <AlertTriangle className="w-7 h-7 text-amber-400" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-white font-display">Areas to Improve</h3>
+                <p className="text-white/40 text-sm">Room for growth</p>
+              </div>
+            </div>
+
+            <ul className="space-y-5">
               {weaknesses.map((weakness, index) => (
                 <motion.li
                   key={index}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.3 + index * 0.1 }}
-                  className="flex items-start gap-2 text-white/70"
+                  transition={{ delay: 0.8 + index * 0.15 }}
+                  className="flex items-start gap-4 group"
                 >
-                  <span className="text-amber-400 mt-1">•</span>
-                  {weakness}
+                  <span className="flex-shrink-0 w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center mt-0.5 group-hover:bg-amber-500/20 transition-colors">
+                    <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  </span>
+                  <span className="text-white/70 text-lg leading-relaxed group-hover:text-white/90 transition-colors">
+                    {weakness}
+                  </span>
                 </motion.li>
               ))}
             </ul>
-          </div>
-        </div>
-      </GlassCard>
-    </motion.div>
+          </GlassCard>
+        </motion.div>
+      </div>
+    </div>
   );
 }

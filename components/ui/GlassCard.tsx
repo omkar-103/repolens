@@ -11,6 +11,7 @@ interface GlassCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
   gradient?: boolean;
   glow?: boolean;
   tilt?: boolean;
+  padding?: "sm" | "md" | "lg" | "xl";
 }
 
 export function GlassCard({
@@ -20,6 +21,7 @@ export function GlassCard({
   gradient = false,
   glow = false,
   tilt = false,
+  padding = "lg",
   ...props
 }: GlassCardProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -30,8 +32,8 @@ export function GlassCard({
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!tilt || !ref.current) return;
@@ -52,11 +54,19 @@ export function GlassCard({
     y.set(0);
   };
 
+  const paddingClasses = {
+    sm: "p-4",
+    md: "p-6",
+    lg: "p-8",
+    xl: "p-10",
+  };
+
   return (
     <motion.div
       ref={ref}
       className={cn(
-        "relative glass-card rounded-2xl p-6 overflow-hidden",
+        "relative glass-card rounded-3xl overflow-hidden",
+        paddingClasses[padding],
         hover && "hover-lift cursor-pointer",
         gradient && "border-gradient",
         glow && "glow-purple",
@@ -65,7 +75,7 @@ export function GlassCard({
       style={tilt ? { rotateX, rotateY, transformStyle: "preserve-3d" } : {}}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={hover ? { scale: 1.02 } : undefined}
+      whileHover={hover ? { scale: 1.01 } : undefined}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
       {...props}
     >
@@ -74,25 +84,14 @@ export function GlassCard({
         <motion.div
           className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
           style={{
-            background: "radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 70%)",
+            background: "radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 70%)",
           }}
           whileHover={{ opacity: 1 }}
         />
       )}
       
-      {/* Shimmer effect */}
-      {hover && <div className="absolute inset-0 shimmer pointer-events-none" />}
-      
       {/* Content */}
       <div className="relative z-10">{children}</div>
-
-      {/* Bottom gradient line */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-[1px] opacity-50"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), rgba(59, 130, 246, 0.5), transparent)",
-        }}
-      />
     </motion.div>
   );
 }

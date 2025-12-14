@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Share2 } from "lucide-react";
+import { ArrowLeft, Share2, Github, ExternalLink } from "lucide-react";
 import { ScoreCard } from "../analysis/ScoreCard";
 import { SummarySection } from "../analysis/SummarySection";
 import { RoadmapSection } from "../analysis/RoadmapSection";
 import { StatsCards } from "../analysis/StatsCards";
 import { AnimatedButton } from "../ui/AnimatedButton";
+import { GlassCard } from "../ui/GlassCard";
 import { AnalysisResult } from "@/types";
 
 interface DashboardProps {
@@ -16,7 +17,7 @@ interface DashboardProps {
 
 export function Dashboard({ result, onBack }: DashboardProps) {
   const handleShare = async () => {
-    const shareText = `🔍 RepoLens Analysis: ${result.repoName}\n📊 Score: ${result.score}/100 (${result.tier})\n\nAnalyze your repos at RepoLens!`;
+    const shareText = `🔍 RepoLens Analysis: ${result.repoName}\n📊 Score: ${result.score}/100 (${result.tier} Tier)\n\n✨ Analyze your repos at RepoLens!`;
 
     if (navigator.share) {
       try {
@@ -35,71 +36,110 @@ export function Dashboard({ result, onBack }: DashboardProps) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen py-8 px-4"
-    >
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-8"
-        >
-          <AnimatedButton
-            variant="ghost"
-            onClick={onBack}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Analyze Another
-          </AnimatedButton>
+    <div className="min-h-screen relative">
+      {/* Top gradient */}
+      <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-500/10 via-blue-500/5 to-transparent pointer-events-none" />
 
-          <AnimatedButton
-            variant="secondary"
-            onClick={handleShare}
-            className="flex items-center gap-2"
-          >
-            <Share2 className="w-5 h-5" />
-            Share Results
-          </AnimatedButton>
-        </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="relative z-10"
+      >
+        {/* Header - Full Width */}
+        <header className="sticky top-0 z-50 glass border-b border-white/5">
+          <div className="full-width-container py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <AnimatedButton
+                  variant="ghost"
+                  onClick={onBack}
+                  className="group"
+                >
+                  <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                  <span>Back</span>
+                </AnimatedButton>
+                
+                <div className="hidden sm:flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                    <Github className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-white font-semibold">{result.repoName}</h1>
+                    <p className="text-white/40 text-sm">Analysis Results</p>
+                  </div>
+                </div>
+              </div>
 
-        {/* Main Content */}
-        <div className="space-y-8">
-          <ScoreCard
-            score={result.score}
-            tier={result.tier}
-            category={result.category}
-            breakdown={result.breakdown}
-            repoName={result.repoName}
-          />
+              <AnimatedButton
+                variant="secondary"
+                onClick={handleShare}
+                icon={<Share2 className="w-4 h-4" />}
+              >
+                Share Results
+              </AnimatedButton>
+            </div>
+          </div>
+        </header>
 
-          <SummarySection
-            summary={result.summary}
-            strengths={result.strengths}
-            weaknesses={result.weaknesses}
-          />
+        {/* Main Content - Full Width with proper spacing */}
+        <main className="full-width-container py-12">
+          {/* Score Section - Hero Level */}
+          <section className="mb-16">
+            <ScoreCard
+              score={result.score}
+              tier={result.tier}
+              category={result.category}
+              breakdown={result.breakdown}
+              repoName={result.repoName}
+            />
+          </section>
 
-          <RoadmapSection roadmap={result.roadmap} />
+          {/* Section Divider */}
+          <div className="section-divider" />
 
-          <StatsCards stats={result.stats} />
-        </div>
+          {/* Two Column Layout for Summary */}
+          <section className="mb-16">
+            <SummarySection
+              summary={result.summary}
+              strengths={result.strengths}
+              weaknesses={result.weaknesses}
+            />
+          </section>
+
+          {/* Section Divider */}
+          <div className="section-divider" />
+
+          {/* Roadmap - Full Width */}
+          <section className="mb-16">
+            <RoadmapSection roadmap={result.roadmap} />
+          </section>
+
+          {/* Section Divider */}
+          <div className="section-divider" />
+
+          {/* Stats Section - Grid Layout */}
+          <section>
+            <StatsCards stats={result.stats} />
+          </section>
+        </main>
 
         {/* Footer */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="text-center mt-12 py-8 border-t border-white/10"
-        >
-          <p className="text-white/40">
-            Built with ❤️ using Next.js & Gemini AI •{" "}
-            <span className="text-gradient font-semibold">RepoLens</span>
-          </p>
-        </motion.div>
-      </div>
-    </motion.div>
+        <footer className="border-t border-white/5 mt-8">
+          <div className="full-width-container py-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                  <span className="text-white font-bold">R</span>
+                </div>
+                <span className="text-white/40 text-sm">
+                  Built with Next.js & Gemini AI
+                </span>
+              </div>
+              <p className="text-gradient font-bold font-display text-xl">RepoLens</p>
+            </div>
+          </div>
+        </footer>
+      </motion.div>
+    </div>
   );
 }

@@ -21,8 +21,7 @@ export default function Home() {
     setError(null);
 
     try {
-      // Small delay for UX
-      await new Promise((r) => setTimeout(r, 300));
+      await new Promise((r) => setTimeout(r, 500));
       setStatus("analyzing");
 
       const response = await fetch("/api/analyze", {
@@ -41,8 +40,7 @@ export default function Home() {
 
       setStatus("complete");
 
-      // Small delay before showing results
-      await new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 800));
       setResult(data);
       setStatus("idle");
     } catch (err) {
@@ -66,10 +64,10 @@ export default function Home() {
         {result ? (
           <motion.div
             key="dashboard"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <Dashboard result={result} onBack={handleBack} />
           </motion.div>
@@ -78,25 +76,41 @@ export default function Home() {
             key="landing"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, x: -100 }}
+            exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.5 }}
-            className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-16"
+            className="relative z-10 min-h-screen"
           >
-            <Hero />
-            <UrlInput
-              onAnalyze={handleAnalyze}
-              loading={status !== "idle" && status !== "error"}
-            />
+            {/* Full width container */}
+            <div className="w-full">
+              {/* Hero Section */}
+              <section className="pt-8">
+                <Hero />
+              </section>
 
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-6 px-6 py-3 bg-red-500/20 border border-red-500/30 rounded-xl text-red-400"
-              >
-                {error}
-              </motion.div>
-            )}
+              {/* Input Section - Centered with breathing room */}
+              <section className="py-16">
+                <UrlInput
+                  onAnalyze={handleAnalyze}
+                  loading={status !== "idle" && status !== "error"}
+                />
+              </section>
+
+              {/* Error display */}
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                    className="flex justify-center px-4"
+                  >
+                    <div className="px-8 py-5 rounded-2xl bg-red-500/10 border border-red-500/20 backdrop-blur-xl max-w-lg">
+                      <p className="text-red-400 text-center font-medium">{error}</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

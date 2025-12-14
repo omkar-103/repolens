@@ -1,10 +1,6 @@
 @import "tailwindcss";
 
 
-
-
-
-
 :root {
   --background: #030014;
   --foreground: #ffffff;
@@ -15,6 +11,11 @@
   --glow-purple: rgba(168, 85, 247, 0.4);
   --glow-blue: rgba(59, 130, 246, 0.4);
   --glow-cyan: rgba(6, 182, 212, 0.4);
+  
+  /* Spacing System */
+  --section-gap: 4rem;
+  --card-gap: 1.5rem;
+  --content-padding: 2rem;
 }
 
 * {
@@ -43,11 +44,11 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -129,18 +130,11 @@ body {
       0 0 40px var(--glow-cyan);
   }
 
-  .glow-text {
-    text-shadow: 
-      0 0 10px var(--glow-purple),
-      0 0 20px var(--glow-purple),
-      0 0 40px var(--glow-blue);
-  }
-
   /* Animated Border Gradient */
   .border-gradient {
     position: relative;
     background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-    border-radius: 20px;
+    border-radius: 24px;
   }
 
   .border-gradient::before {
@@ -162,36 +156,6 @@ body {
     opacity: 1;
   }
 
-  /* Animated Gradient Background */
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 8s ease infinite;
-  }
-
-  /* Floating Animation */
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-float-delayed {
-    animation: float 6s ease-in-out infinite;
-    animation-delay: 2s;
-  }
-
-  .animate-float-slow {
-    animation: float 10s ease-in-out infinite;
-  }
-
-  /* Pulse Glow */
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  /* Spin Slow */
-  .animate-spin-slow {
-    animation: spin 20s linear infinite;
-  }
-
   /* Mesh Gradient Background */
   .mesh-gradient {
     background: 
@@ -204,16 +168,12 @@ body {
   }
 
   /* Noise Texture Overlay */
-  .noise-overlay {
-    position: relative;
-  }
-
   .noise-overlay::after {
     content: "";
     position: absolute;
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.03;
+    opacity: 0.02;
     pointer-events: none;
     mix-blend-mode: overlay;
   }
@@ -224,7 +184,7 @@ body {
   }
 
   .hover-lift:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-4px);
   }
 
   /* Shimmer Effect */
@@ -240,11 +200,18 @@ body {
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.08) 50%,
       transparent 100%
     );
     transform: translateX(-100%);
     animation: shimmer 3s infinite;
+  }
+
+  /* Section Divider */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    margin: 3rem 0;
   }
 }
 
@@ -280,36 +247,24 @@ body {
   to { transform: rotate(360deg); }
 }
 
-@keyframes morph {
-  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-}
-
 /* Grid Pattern */
 .grid-pattern {
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
 }
 
-/* Spotlight Effect */
-.spotlight {
-  position: relative;
-}
-
-.spotlight::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+/* Full Width Container */
+.full-width-container {
   width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    ellipse 80% 50% at 50% -20%,
-    rgba(168, 85, 247, 0.15),
-    transparent
-  );
-  pointer-events: none;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (min-width: 1536px) {
+  .full-width-container {
+    max-width: 1600px;
+  }
 }

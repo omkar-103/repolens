@@ -1,14 +1,17 @@
 "use client";
 
 import { motion, useSpring, useTransform } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
-  FileCode,
-  Folder,
+  FileCode2,
+  FolderTree,
   GitCommit,
   GitBranch,
   Star,
   GitFork,
+  Code2,
+  Calendar,
+  Clock,
 } from "lucide-react";
 import { GlassCard } from "../ui/GlassCard";
 import { RepoStats } from "@/types";
@@ -19,122 +22,251 @@ interface StatsCardsProps {
 }
 
 function AnimatedCounter({ value }: { value: number }) {
+  const [mounted, setMounted] = useState(false);
   const spring = useSpring(0, { stiffness: 50, damping: 20 });
   const display = useTransform(spring, (v) => formatNumber(Math.round(v)));
 
   useEffect(() => {
+    setMounted(true);
     spring.set(value);
   }, [value, spring]);
 
+  if (!mounted) return <span>0</span>;
+  
   return <motion.span>{display}</motion.span>;
 }
 
+const languageColors: { [key: string]: string } = {
+  TypeScript: "#3178c6",
+  JavaScript: "#f7df1e",
+  Python: "#3572A5",
+  Java: "#b07219",
+  "C++": "#f34b7d",
+  C: "#555555",
+  Go: "#00ADD8",
+  Rust: "#dea584",
+  Ruby: "#701516",
+  PHP: "#4F5D95",
+  Swift: "#ffac45",
+  Kotlin: "#A97BFF",
+  CSS: "#563d7c",
+  HTML: "#e34c26",
+  Shell: "#89e051",
+  SCSS: "#c6538c",
+  Vue: "#41b883",
+  Svelte: "#ff3e00",
+};
+
 export function StatsCards({ stats }: StatsCardsProps) {
   const statItems = [
-    { icon: FileCode, label: "Files", value: stats.totalFiles },
-    { icon: Folder, label: "Folders", value: stats.totalFolders },
-    { icon: GitCommit, label: "Commits", value: stats.commits },
-    { icon: GitBranch, label: "Branches", value: stats.branches },
-    { icon: Star, label: "Stars", value: stats.stars },
-    { icon: GitFork, label: "Forks", value: stats.forks },
+    { icon: FileCode2, label: "Files", value: stats.totalFiles, color: "from-blue-500 to-cyan-500" },
+    { icon: FolderTree, label: "Folders", value: stats.totalFolders, color: "from-purple-500 to-pink-500" },
+    { icon: GitCommit, label: "Commits", value: stats.commits, color: "from-green-500 to-emerald-500" },
+    { icon: GitBranch, label: "Branches", value: stats.branches, color: "from-orange-500 to-amber-500" },
+    { icon: Star, label: "Stars", value: stats.stars, color: "from-yellow-500 to-orange-500" },
+    { icon: GitFork, label: "Forks", value: stats.forks, color: "from-pink-500 to-rose-500" },
   ];
 
-  // Calculate total bytes for language percentages
-  const totalBytes = Object.values(stats.languages).reduce(
-    (sum, val) => sum + val,
-    0
-  );
+  const totalBytes = Object.values(stats.languages).reduce((sum, val) => sum + val, 0);
+  const sortedLanguages = Object.entries(stats.languages)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 8);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.6 }}
-    >
-      <h3 className="text-2xl font-bold text-white mb-6">Repository Stats</h3>
+    <div className="space-y-8">
+      {/* Section Header */}
+      <motion.div
+        className="flex items-center gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+          <Code2 className="w-7 h-7 text-white" />
+        </div>
+        <div>
+          <h2 className="text-3xl font-bold text-white font-display">Repository Statistics</h2>
+          <p className="text-white/40">Detailed breakdown of your codebase</p>
+        </div>
+      </motion.div>
 
-      {/* Quick stats grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      {/* Stats Grid - Full Width */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
         {statItems.map((item, index) => (
           <motion.div
             key={item.label}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.7 + index * 0.05 }}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.1 + index * 0.08, type: "spring" }}
           >
-            <GlassCard className="text-center py-4">
-              <item.icon className="w-6 h-6 mx-auto mb-2 text-purple-400" />
-              <div className="text-2xl font-bold text-white">
+            <GlassCard className="text-center relative group" padding="lg" tilt>
+              {/* Hover glow */}
+              <div 
+                className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-2xl bg-gradient-to-r ${item.color}`}
+                style={{ transform: "scale(0.7)" }} 
+              />
+              
+              {/* Icon */}
+              <motion.div
+                className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${item.color} p-[1px]`}
+                whileHover={{ scale: 1.1, rotate: 5 }}
+              >
+                <div className="w-full h-full rounded-2xl bg-background/80 flex items-center justify-center">
+                  <item.icon className="w-6 h-6 text-white" />
+                </div>
+              </motion.div>
+
+              {/* Value */}
+              <div className="text-3xl font-bold text-white font-display mb-2">
                 <AnimatedCounter value={item.value} />
               </div>
-              <div className="text-sm text-white/60">{item.label}</div>
+
+              {/* Label */}
+              <div className="text-sm text-white/50 font-medium">{item.label}</div>
             </GlassCard>
           </motion.div>
         ))}
       </div>
 
-      {/* Language breakdown */}
-      {totalBytes > 0 && (
-        <GlassCard hover={false}>
-          <h4 className="text-lg font-semibold text-white mb-4">Languages</h4>
-          <div className="space-y-3">
-            {Object.entries(stats.languages)
-              .sort(([, a], [, b]) => b - a)
-              .slice(0, 5)
-              .map(([language, bytes], index) => {
-                const percentage = ((bytes / totalBytes) * 100).toFixed(1);
-                return (
-                  <motion.div
-                    key={language}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.8 + index * 0.1 }}
-                  >
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-white">{language}</span>
-                      <span className="text-white/60">{percentage}%</span>
-                    </div>
-                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{
-                          background: getLanguageColor(language),
-                        }}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${percentage}%` }}
-                        transition={{ duration: 1, delay: 0.9 + index * 0.1 }}
-                      />
-                    </div>
-                  </motion.div>
-                );
-              })}
-          </div>
-        </GlassCard>
-      )}
-    </motion.div>
-  );
-}
+      {/* Two Column Layout for Languages and Timeline */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Languages - Takes 2 columns */}
+        {totalBytes > 0 && (
+          <motion.div
+            className="lg:col-span-2"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <GlassCard className="h-full" padding="xl" hover={false}>
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-2xl font-bold text-white font-display">Languages</h3>
+                <span className="text-white/40 text-sm font-mono px-3 py-1 rounded-lg bg-white/5">
+                  {sortedLanguages.length} detected
+                </span>
+              </div>
 
-function getLanguageColor(language: string): string {
-  const colors: { [key: string]: string } = {
-    TypeScript: "#3178c6",
-    JavaScript: "#f7df1e",
-    Python: "#3572A5",
-    Java: "#b07219",
-    "C++": "#f34b7d",
-    C: "#555555",
-    Go: "#00ADD8",
-    Rust: "#dea584",
-    Ruby: "#701516",
-    PHP: "#4F5D95",
-    Swift: "#ffac45",
-    Kotlin: "#A97BFF",
-    CSS: "#563d7c",
-    HTML: "#e34c26",
-    Shell: "#89e051",
-    SCSS: "#c6538c",
-    Vue: "#41b883",
-    Svelte: "#ff3e00",
-  };
-  return colors[language] || "#8b5cf6";
+              {/* Language bar */}
+              <div className="h-4 rounded-full overflow-hidden flex mb-8 bg-white/5">
+                {sortedLanguages.map(([language, bytes], index) => {
+                  const percentage = (bytes / totalBytes) * 100;
+                  return (
+                    <motion.div
+                      key={language}
+                      className="h-full relative group cursor-pointer"
+                      style={{
+                        width: `${percentage}%`,
+                        backgroundColor: languageColors[language] || "#8b5cf6",
+                      }}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${percentage}%` }}
+                      transition={{ duration: 1, delay: 0.6 + index * 0.1 }}
+                      whileHover={{ filter: "brightness(1.2)" }}
+                    >
+                      {/* Tooltip */}
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-xl text-white text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
+                        {language}: {percentage.toFixed(1)}%
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Language list */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+                {sortedLanguages.map(([language, bytes], index) => {
+                  const percentage = ((bytes / totalBytes) * 100).toFixed(1);
+                  const color = languageColors[language] || "#8b5cf6";
+
+                  return (
+                    <motion.div
+                      key={language}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.8 + index * 0.1 }}
+                      className="flex items-center gap-3 group"
+                    >
+                      <div
+                        className="w-4 h-4 rounded-full flex-shrink-0 transition-transform group-hover:scale-125"
+                        style={{ 
+                          backgroundColor: color,
+                          boxShadow: `0 0 12px ${color}60`,
+                        }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-white/80 text-sm font-medium truncate block">
+                          {language}
+                        </span>
+                        <span className="text-white/40 text-xs font-mono">
+                          {percentage}%
+                        </span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </GlassCard>
+          </motion.div>
+        )}
+
+        {/* Timeline - Takes 1 column */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="space-y-5"
+        >
+          <GlassCard className="h-auto" padding="lg" hover={false}>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center">
+                <Calendar className="w-7 h-7 text-green-400" />
+              </div>
+              <div>
+                <p className="text-white/40 text-sm mb-1">Created</p>
+                <p className="text-white font-semibold text-lg">
+                  {stats.createdAt ? new Date(stats.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }) : "Unknown"}
+                </p>
+              </div>
+            </div>
+          </GlassCard>
+
+          <GlassCard className="h-auto" padding="lg" hover={false}>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center">
+                <Clock className="w-7 h-7 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-white/40 text-sm mb-1">Last Updated</p>
+                <p className="text-white font-semibold text-lg">
+                  {stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }) : "Unknown"}
+                </p>
+              </div>
+            </div>
+          </GlassCard>
+
+          {/* Lines of Code Estimate */}
+          <GlassCard className="h-auto" padding="lg" hover={false}>
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center">
+                <Code2 className="w-7 h-7 text-purple-400" />
+              </div>
+              <div>
+                <p className="text-white/40 text-sm mb-1">Est. Lines</p>
+                <p className="text-white font-semibold text-lg font-mono">
+                  <AnimatedCounter value={stats.linesOfCode} />
+                </p>
+              </div>
+            </div>
+          </GlassCard>
+        </motion.div>
+      </div>
+    </div>
+  );
 }
