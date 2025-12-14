@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 RepoLens
 
-## Getting Started
+![RepoLens Homepage](https://res.cloudinary.com/dr59elrhw/image/upload/v1765705881/4d6072e2-878a-42cf-9c89-bf72941a74fa.png)
 
-First, run the development server:
+<div align="center">
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🔴 LIVE DEMO  
+# 👉👉👉 **https://repo--lens.vercel.app/** 👈👈👈
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+</div>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**RepoLens** is an AI-powered GitHub repository analyzer that helps developers instantly understand the quality, structure, and health of any public GitHub repository.
 
-## Learn More
+Just paste a repository URL and get **AI-driven code analysis, quality scores, and a personalized improvement roadmap** — all in seconds.
 
-To learn more about Next.js, take a look at the following resources:
+Built with ❤️ using **Next.js** and **Gemini AI**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ✨ Features
 
-## Deploy on Vercel
+- ⚡ **Lightning Fast Analysis**  
+  Get complete repository insights in under 30 seconds.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 🤖 **AI-Powered Evaluation**  
+  Gemini AI analyzes code structure, quality, and best practices.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 🛠️ **Actionable Improvement Roadmap**  
+  Clear, prioritized steps to improve your repository.
+
+- 🎨 **Modern & Futuristic UI**  
+  Fully responsive design with smooth animations.
+
+- 📊 **Detailed Repository Statistics**  
+  Insights into languages, commits, size, and overall health.
+
+---
+
+## 💡 How It Works
+
+1. Paste any **public GitHub repository URL**
+2. RepoLens analyzes the repository using AI
+3. Get quality scores, strengths, weaknesses, and improvement suggestions
+
+---
+
+## 📊 Dashboard Preview
+
+![RepoLens Dashboard](https://res.cloudinary.com/dr59elrhw/image/upload/v1765705935/9a6464a9-71f2-4306-8516-77e79c9b03ba.png)
+
+![RepoLens Dashboard Continued](https://res.cloudinary.com/dr59elrhw/image/upload/v1765705963/0b6bfb39-869e-4a5e-9ba4-e8cdb38ad92d.png)
+
+![RepoLens Metrics](https://res.cloudinary.com/dr59elrhw/image/upload/v1765705966/9ae133ba-00f9-428c-9b9c-9f2315304a6f.png)
+
+---
+
+## 🧰 Tech Stack
+
+**Frontend**
+- Next.js
+- Tailwind CSS
+- Framer Motion
+
+**AI & Backend**
+- Gemini AI
+- GitHub API
+
+**Deployment**
+- Vercel
+
+---
+
+## 🌱 Contributing
+
+Contributions are welcome!  
+Feel free to open an issue or submit a pull request.
+
+---
+
+## 👨‍💻 Built By
+
+**Omkar Parelkar**
+
+- 🔗 LinkedIn: https://www.linkedin.com/in/omkar-parelkar/
+- 🐙 GitHub: https://github.com/omkarparelkar
+
+---
+
+© 2025 **RepoLens**. All rights reserved.
