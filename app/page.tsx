@@ -291,16 +291,16 @@ function HeroSection() {
             </h1>
           </motion.div>
 
-          {/* Subtitle */}
-          <motion.p
-            className="text-xl sm:text-2xl text-white/50 max-w-3xl mx-auto mb-16 leading-relaxed font-medium"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            Paste any public repository URL and get instant AI-powered analysis,
-            quality scores, and a personalized improvement roadmap.
-          </motion.p>
+        <motion.p
+  className="text-center text-xl sm:text-2xl text-white/50 max-w-3xl mx-auto mb-16 leading-relaxed font-medium"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.3 }}
+><br/>
+  Paste any public repository URL and get instant AI-powered analysis,
+  quality scores, and a personalized improvement roadmap.
+</motion.p>
+
 
           {/* Scroll indicator */}
           <motion.div
@@ -323,7 +323,7 @@ function HeroSection() {
   );
 }
 
-// ==================== URL INPUT SECTION ====================
+// ==================== URL INPUT SECTION - FORCE CENTERED ====================
 function UrlInputSection({ 
   onAnalyze, 
   loading 
@@ -382,157 +382,162 @@ function UrlInputSection({
 
   return (
     <section className="w-full py-20 relative z-10">
-      <div className="max-w-5xl mx-auto px-6">
-        {/* THE MAIN INPUT - This is THE hero element */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="relative"
-        >
-          {/* Massive glow background when focused */}
+      {/* FORCE CENTER WRAPPER */}
+      <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full max-w-4xl px-6 mx-auto">
+          {/* THE MAIN INPUT */}
           <motion.div
-            className="absolute -inset-6 rounded-[3rem] bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 blur-3xl"
-            style={{ opacity: glowOpacitySpring }}
-          />
-          
-          {/* Always visible subtle glow */}
-          <div className="absolute -inset-3 rounded-[2.5rem] bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-500/30 blur-2xl" />
-          
-          {/* Outer container with gradient border */}
-          <motion.div
-            className={`
-              relative rounded-[2rem] p-[2px] transition-all duration-500
-              ${isFocused 
-                ? "bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500" 
-                : "bg-gradient-to-r from-purple-500/50 via-blue-500/50 to-cyan-500/50"}
-            `}
-            animate={{
-              boxShadow: isFocused 
-                ? "0 0 100px rgba(168, 85, 247, 0.4), 0 0 150px rgba(59, 130, 246, 0.3)"
-                : "0 0 40px rgba(168, 85, 247, 0.2), 0 0 60px rgba(59, 130, 246, 0.15)",
-            }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="relative w-full"
           >
-            {/* Inner container */}
-            <div className="relative rounded-[calc(2rem-2px)] bg-[#030014]/95 backdrop-blur-xl p-4 sm:p-5">
-              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 sm:p-5">
-                {/* GitHub icon - Always prominent */}
-                <motion.div
-                  className={`
-                    flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center
-                    transition-all duration-300
-                    ${isFocused 
-                      ? "bg-gradient-to-br from-purple-500 to-blue-500 shadow-[0_0_30px_rgba(168,85,247,0.5)]" 
-                      : "bg-gradient-to-br from-purple-500/80 to-blue-500/80"
-                    }
-                  `}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Github className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-                </motion.div>
-
-                {/* Input field */}
-                <div className="flex-1 relative w-full">
-                  <input
-                    type="text"
-                    value={url}
-                    onChange={(e) => {
-                      setUrl(e.target.value);
-                      setError("");
-                    }}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="github.com/owner/repository"
-                    className="w-full bg-transparent text-white text-xl sm:text-2xl placeholder-white/30 outline-none font-medium text-center sm:text-left"
-                    disabled={loading}
-                  />
-                  
-                  {/* Valid indicator */}
-                  <AnimatePresence>
-                    {isValid && url && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0 }}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 hidden sm:block"
-                      >
-                        <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
-                          <motion.div
-                            className="w-3 h-3 rounded-full bg-green-400"
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 1, repeat: Infinity }}
-                          />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* THE ACTION BUTTON - BIG and PROMINENT */}
-                <AnimatedButton
-                  onClick={handleSubmit}
-                  loading={loading}
-                  size="lg"
-                  className="w-full sm:w-auto flex-shrink-0"
-                  icon={loading ? undefined : <ArrowRight className="w-5 h-5" />}
-                >
-                  {loading ? "Analyzing" : "Analyze"}
-                </AnimatedButton>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Error message */}
-        <AnimatePresence>
-          {error && (
+            {/* Massive glow background when focused */}
             <motion.div
-              initial={{ opacity: 0, y: -10, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: "auto" }}
-              exit={{ opacity: 0, y: -10, height: 0 }}
-              className="flex items-center justify-center gap-2 mt-8 px-6 py-4 rounded-2xl bg-red-500/10 border border-red-500/20 max-w-xl mx-auto"
+              className="absolute -inset-6 rounded-[3rem] bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 blur-3xl"
+              style={{ opacity: glowOpacitySpring }}
+            />
+            
+            {/* Always visible subtle glow */}
+            <div className="absolute -inset-3 rounded-[2.5rem] bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-500/30 blur-2xl" />
+            
+            {/* Outer container with gradient border */}
+            <motion.div
+              className={`
+                relative rounded-[2rem] p-[2px] transition-all duration-500
+                ${isFocused 
+                  ? "bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500" 
+                  : "bg-gradient-to-r from-purple-500/50 via-blue-500/50 to-cyan-500/50"}
+              `}
+              animate={{
+                boxShadow: isFocused 
+                  ? "0 0 100px rgba(168, 85, 247, 0.4), 0 0 150px rgba(59, 130, 246, 0.3)"
+                  : "0 0 40px rgba(168, 85, 247, 0.2), 0 0 60px rgba(59, 130, 246, 0.15)",
+              }}
             >
-              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-              <span className="text-red-400 text-sm font-medium">{error}</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {/* Inner container */}
+              <div className="relative rounded-[calc(2rem-2px)] bg-[#030014]/95 backdrop-blur-xl p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 p-4 sm:p-5">
+                  {/* GitHub icon - Always prominent */}
+                  <motion.div
+                    className={`
+                      flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center
+                      transition-all duration-300
+                      ${isFocused 
+                        ? "bg-gradient-to-br from-purple-500 to-blue-500 shadow-[0_0_30px_rgba(168,85,247,0.5)]" 
+                        : "bg-gradient-to-br from-purple-500/80 to-blue-500/80"
+                      }
+                    `}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Github className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                  </motion.div>
 
-        {/* Suggestions - Subtle, helpful */}
-        <motion.div
-          className="mt-12 flex flex-wrap items-center justify-center gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
-          <span className="text-white/30 text-sm flex items-center gap-2">
-            <Search className="w-4 h-4" />
-            Try these:
-          </span>
-          {suggestions.map((suggestion, index) => (
-            <motion.button
-              key={suggestion}
-              onClick={() => setUrl(`github.com/${suggestion}`)}
-              className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/50 text-sm font-mono
-                         hover:bg-white/10 hover:text-white/70 hover:border-white/20 transition-all duration-300"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 + index * 0.1 }}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {suggestion}
-            </motion.button>
-          ))}
-        </motion.div>
+                  {/* Input field */}
+                  <div className="flex-1 relative w-full">
+                    <input
+                      type="text"
+                      value={url}
+                      onChange={(e) => {
+                        setUrl(e.target.value);
+                        setError("");
+                      }}
+                      onFocus={() => setIsFocused(true)}
+                      onBlur={() => setIsFocused(false)}
+                      onKeyDown={handleKeyDown}
+                      placeholder="github.com/owner/repository"
+                      className="w-full bg-transparent text-white text-xl sm:text-2xl placeholder-white/30 outline-none font-medium text-center sm:text-left"
+                      disabled={loading}
+                    />
+                    
+                    {/* Valid indicator */}
+                    <AnimatePresence>
+                      {isValid && url && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0 }}
+                          className="absolute right-0 top-1/2 -translate-y-1/2 hidden sm:block"
+                        >
+                          <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <motion.div
+                              className="w-3 h-3 rounded-full bg-green-400"
+                              animate={{ scale: [1, 1.2, 1] }}
+                              transition={{ duration: 1, repeat: Infinity }}
+                            />
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* THE ACTION BUTTON - BIG and PROMINENT */}
+                  <AnimatedButton
+                    onClick={handleSubmit}
+                    loading={loading}
+                    size="lg"
+                    className="w-full sm:w-auto flex-shrink-0"
+                    icon={loading ? undefined : <ArrowRight className="w-5 h-5" />}
+                  >
+                    {loading ? "Analyzing" : "Analyze"}
+                  </AnimatedButton>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Error message - CENTERED */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: "auto" }}
+                exit={{ opacity: 0, y: -10, height: 0 }}
+                className="w-full flex justify-center mt-8"
+              >
+                <div className="flex items-center gap-2 px-6 py-4 rounded-2xl bg-red-500/10 border border-red-500/20">
+                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                  <span className="text-red-400 text-sm font-medium">{error}</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Suggestions - CENTERED */}
+          <motion.div
+            className="w-full flex flex-wrap items-center justify-center gap-4 mt-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            <span className="text-white/30 text-sm flex items-center gap-2">
+              <Search className="w-4 h-4" />
+              Try these:
+            </span>
+            {suggestions.map((suggestion, index) => (
+              <motion.button
+                key={suggestion}
+                onClick={() => setUrl(`github.com/${suggestion}`)}
+                className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/50 text-sm font-mono
+                           hover:bg-white/10 hover:text-white/70 hover:border-white/20 transition-all duration-300"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 + index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {suggestion}
+              </motion.button>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
-// ==================== FEATURES SECTION ====================
+// ==================== FEATURES SECTION - FORCE CENTERED ====================
 function FeaturesSection() {
   const features = [
     {
@@ -560,74 +565,85 @@ function FeaturesSection() {
 
   return (
     <section className="w-full py-24 relative z-10">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Why <span className="text-gradient">RepoLens</span>?
-          </h2>
-          <p className="text-white/50 text-xl max-w-2xl mx-auto">
-            Get instant, actionable insights about your repository's health and quality.
-          </p>
-        </motion.div>
+      {/* FORCE CENTER - Full width flex container */}
+      <div className="w-full flex flex-col items-center justify-center">
+        {/* Content container with strict centering */}
+        <div className="w-full max-w-6xl px-6 mx-auto flex flex-col items-center">
+          
+          {/* Section Header - CENTERED */}
+          <motion.div
+            className="w-full text-center mb-20"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+              Why <span className="text-gradient">RepoLens</span>?
+            </h2>
+            {/* <p className="text-white/50 text-xl max-w-2xl mx-auto">
+              Get instant, actionable insights about your repository's health and quality.
+            </p> */}
+          </motion.div>
 
-        {/* Feature Cards */}
-        <div className="grid md:grid-cols-3 gap-10">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15 }}
-            >
-              <GlassCard className="text-center h-full border-white/20" padding="xl" tilt>
-                {/* Icon */}
+          {/* Feature Cards - CENTERED GRID */}
+          <div className="w-full max-w-5xl">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+              {features.map((feature, index) => (
                 <motion.div
-                  className={`w-24 h-24 mx-auto mb-10 rounded-3xl bg-gradient-to-br ${feature.gradient} p-[2px]`}
-                  whileHover={{ scale: 1.15, rotate: 8 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                  style={{
-                    boxShadow: `0 25px 50px -12px ${feature.shadowColor}`
-                  }}
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.15 }}
+                  className="w-full max-w-sm"
                 >
-                  <div className="w-full h-full rounded-3xl bg-black/50 backdrop-blur-xl flex items-center justify-center">
-                    <feature.icon className="w-12 h-12 text-white drop-shadow-lg" />
-                  </div>
-                </motion.div>
+                  <GlassCard className="text-center h-full border-white/20" padding="xl" tilt>
+                    {/* Icon */}
+                    <motion.div
+                      className={`w-24 h-24 mx-auto mb-10 rounded-3xl bg-gradient-to-br ${feature.gradient} p-[2px]`}
+                      whileHover={{ scale: 1.15, rotate: 8 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      style={{
+                        boxShadow: `0 25px 50px -12px ${feature.shadowColor}`
+                      }}
+                    >
+                      <div className="w-full h-full rounded-3xl bg-black/50 backdrop-blur-xl flex items-center justify-center">
+                        <feature.icon className="w-12 h-12 text-white drop-shadow-lg" />
+                      </div>
+                    </motion.div>
 
-                <h3 className="text-2xl font-bold text-white mb-5">
-                  {feature.title}
-                </h3>
-                <p className="text-white/50 text-lg leading-relaxed">
-                  {feature.description}
-                </p>
-              </GlassCard>
-            </motion.div>
-          ))}
+                    <h3 className="text-2xl font-bold text-white mb-5">
+                      {feature.title}
+                    </h3>
+                    <p className="text-white/50 text-lg leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-// ==================== FOOTER SECTION ====================
+// ==================== FOOTER SECTION - FORCE CENTERED ====================
 function FooterSection() {
   return (
-    <footer className="relative border-t border-white/5 mt-20">
+    <footer className="relative border-t border-white/5 mt-20 w-full">
       {/* Gradient line at top */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
       
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="flex flex-col items-center gap-10">
-          {/* Logo and Brand */}
+      {/* FORCE CENTER - Full width flex container */}
+      <div className="w-full flex flex-col items-center justify-center py-16">
+        {/* Content container with strict centering */}
+        <div className="w-full max-w-4xl px-6 mx-auto flex flex-col items-center">
+          
+          {/* Logo and Brand - CENTERED */}
           <motion.div
-            className="flex items-center gap-4"
+            className="flex items-center justify-center gap-4 mb-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -638,9 +654,9 @@ function FooterSection() {
             <span className="text-gradient font-bold text-3xl">RepoLens</span>
           </motion.div>
 
-          {/* Creator Attribution - PROMINENT */}
+          {/* Creator Attribution - CENTERED */}
           <motion.div
-            className="text-center"
+            className="flex flex-col items-center text-center mb-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -651,7 +667,7 @@ function FooterSection() {
             </p>
             <p className="text-white font-bold text-2xl mb-6">Omkar Parelkar</p>
             
-            {/* Social Links */}
+            {/* Social Links - CENTERED */}
             <div className="flex items-center justify-center gap-4">
               <motion.a
                 href="https://github.com/omkarparelkar"
@@ -679,9 +695,9 @@ function FooterSection() {
             </div>
           </motion.div>
 
-          {/* Tech Stack */}
+          {/* Tech Stack - CENTERED */}
           <motion.div
-            className="flex items-center gap-3 text-white/30 text-sm"
+            className="flex items-center justify-center gap-3 text-white/30 text-sm mb-6"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -693,9 +709,9 @@ function FooterSection() {
             <span className="px-3 py-1.5 rounded-lg bg-white/5 text-white/50 font-mono text-xs border border-white/10">Gemini AI</span>
           </motion.div>
 
-          {/* Copyright */}
+          {/* Copyright - CENTERED */}
           <motion.p
-            className="text-white/20 text-sm"
+            className="text-white/20 text-sm text-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -797,7 +813,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                  className="flex justify-center px-6 pb-8"
+                  className="w-full flex justify-center px-6 pb-8"
                 >
                   <div className="px-8 py-5 rounded-2xl bg-red-500/10 border border-red-500/20 backdrop-blur-xl max-w-lg">
                     <p className="text-red-400 text-center font-medium">{error}</p>
