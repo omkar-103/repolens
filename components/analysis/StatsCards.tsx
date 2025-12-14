@@ -73,24 +73,24 @@ export function StatsCards({ stats }: StatsCardsProps) {
     .slice(0, 8);
 
   return (
-    <div className="space-y-8">
-      {/* Section Header */}
+    <div className="space-y-12">
+      {/* Section Header - PROMINENT */}
       <motion.div
-        className="flex items-center gap-4"
+        className="flex items-center gap-5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-          <Code2 className="w-7 h-7 text-white" />
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+          <Code2 className="w-8 h-8 text-white" />
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-white font-display">Repository Statistics</h2>
-          <p className="text-white/40">Detailed breakdown of your codebase</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white font-display">Repository Statistics</h2>
+          <p className="text-white/40 text-lg">Detailed breakdown of your codebase</p>
         </div>
       </motion.div>
 
-      {/* Stats Grid - Full Width */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+      {/* Stats Grid - Full Width, Generous Spacing */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
         {statItems.map((item, index) => (
           <motion.div
             key={item.label}
@@ -98,37 +98,37 @@ export function StatsCards({ stats }: StatsCardsProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.1 + index * 0.08, type: "spring" }}
           >
-            <GlassCard className="text-center relative group" padding="lg" tilt>
+            <GlassCard className="text-center relative group" padding="xl" tilt>
               {/* Hover glow */}
               <div 
                 className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-2xl bg-gradient-to-r ${item.color}`}
-                style={{ transform: "scale(0.7)" }} 
+                style={{ transform: "scale(0.6)" }} 
               />
               
               {/* Icon */}
               <motion.div
-                className={`w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${item.color} p-[1px]`}
+                className={`w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br ${item.color} p-[1px]`}
                 whileHover={{ scale: 1.1, rotate: 5 }}
               >
                 <div className="w-full h-full rounded-2xl bg-background/80 flex items-center justify-center">
-                  <item.icon className="w-6 h-6 text-white" />
+                  <item.icon className="w-7 h-7 text-white" />
                 </div>
               </motion.div>
 
               {/* Value */}
-              <div className="text-3xl font-bold text-white font-display mb-2">
+              <div className="text-4xl font-bold text-white font-display mb-2">
                 <AnimatedCounter value={item.value} />
               </div>
 
               {/* Label */}
-              <div className="text-sm text-white/50 font-medium">{item.label}</div>
+              <div className="text-base text-white/50 font-medium">{item.label}</div>
             </GlassCard>
           </motion.div>
         ))}
       </div>
 
       {/* Two Column Layout for Languages and Timeline */}
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-10">
         {/* Languages - Takes 2 columns */}
         {totalBytes > 0 && (
           <motion.div
@@ -137,16 +137,16 @@ export function StatsCards({ stats }: StatsCardsProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <GlassCard className="h-full" padding="xl" hover={false}>
-              <div className="flex items-center justify-between mb-8">
+            <GlassCard className="h-full" padding="2xl" hover={false}>
+              <div className="flex items-center justify-between mb-10">
                 <h3 className="text-2xl font-bold text-white font-display">Languages</h3>
-                <span className="text-white/40 text-sm font-mono px-3 py-1 rounded-lg bg-white/5">
+                <span className="text-white/40 text-sm font-mono px-4 py-2 rounded-xl bg-white/5">
                   {sortedLanguages.length} detected
                 </span>
               </div>
 
               {/* Language bar */}
-              <div className="h-4 rounded-full overflow-hidden flex mb-8 bg-white/5">
+              <div className="h-5 rounded-full overflow-hidden flex mb-10 bg-white/5">
                 {sortedLanguages.map(([language, bytes], index) => {
                   const percentage = (bytes / totalBytes) * 100;
                   return (
@@ -160,10 +160,10 @@ export function StatsCards({ stats }: StatsCardsProps) {
                       initial={{ width: 0 }}
                       animate={{ width: `${percentage}%` }}
                       transition={{ duration: 1, delay: 0.6 + index * 0.1 }}
-                      whileHover={{ filter: "brightness(1.2)" }}
+                      whileHover={{ filter: "brightness(1.3)" }}
                     >
                       {/* Tooltip */}
-                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-xl text-white text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-xl text-white text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
                         {language}: {percentage.toFixed(1)}%
                       </div>
                     </motion.div>
@@ -172,7 +172,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
               </div>
 
               {/* Language list */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                 {sortedLanguages.map(([language, bytes], index) => {
                   const percentage = ((bytes / totalBytes) * 100).toFixed(1);
                   const color = languageColors[language] || "#8b5cf6";
@@ -183,20 +183,20 @@ export function StatsCards({ stats }: StatsCardsProps) {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.8 + index * 0.1 }}
-                      className="flex items-center gap-3 group"
+                      className="flex items-center gap-4 group"
                     >
                       <div
-                        className="w-4 h-4 rounded-full flex-shrink-0 transition-transform group-hover:scale-125"
+                        className="w-5 h-5 rounded-full flex-shrink-0 transition-transform group-hover:scale-125"
                         style={{ 
                           backgroundColor: color,
-                          boxShadow: `0 0 12px ${color}60`,
+                          boxShadow: `0 0 15px ${color}60`,
                         }}
                       />
                       <div className="flex-1 min-w-0">
-                        <span className="text-white/80 text-sm font-medium truncate block">
+                        <span className="text-white/80 font-medium truncate block">
                           {language}
                         </span>
-                        <span className="text-white/40 text-xs font-mono">
+                        <span className="text-white/40 text-sm font-mono">
                           {percentage}%
                         </span>
                       </div>
@@ -213,16 +213,16 @@ export function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="space-y-5"
+          className="space-y-6"
         >
-          <GlassCard className="h-auto" padding="lg" hover={false}>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center">
-                <Calendar className="w-7 h-7 text-green-400" />
+          <GlassCard padding="xl" hover={false}>
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-green-500/20 flex items-center justify-center">
+                <Calendar className="w-8 h-8 text-green-400" />
               </div>
               <div>
                 <p className="text-white/40 text-sm mb-1">Created</p>
-                <p className="text-white font-semibold text-lg">
+                <p className="text-white font-semibold text-xl">
                   {stats.createdAt ? new Date(stats.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
@@ -233,14 +233,14 @@ export function StatsCards({ stats }: StatsCardsProps) {
             </div>
           </GlassCard>
 
-          <GlassCard className="h-auto" padding="lg" hover={false}>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center">
-                <Clock className="w-7 h-7 text-blue-400" />
+          <GlassCard padding="xl" hover={false}>
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center">
+                <Clock className="w-8 h-8 text-blue-400" />
               </div>
               <div>
                 <p className="text-white/40 text-sm mb-1">Last Updated</p>
-                <p className="text-white font-semibold text-lg">
+                <p className="text-white font-semibold text-xl">
                   {stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
@@ -251,15 +251,14 @@ export function StatsCards({ stats }: StatsCardsProps) {
             </div>
           </GlassCard>
 
-          {/* Lines of Code Estimate */}
-          <GlassCard className="h-auto" padding="lg" hover={false}>
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center">
-                <Code2 className="w-7 h-7 text-purple-400" />
+          <GlassCard padding="xl" hover={false}>
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center">
+                <Code2 className="w-8 h-8 text-purple-400" />
               </div>
               <div>
-                <p className="text-white/40 text-sm mb-1">Est. Lines</p>
-                <p className="text-white font-semibold text-lg font-mono">
+                <p className="text-white/40 text-sm mb-1">Est. Lines of Code</p>
+                <p className="text-white font-semibold text-xl font-mono">
                   <AnimatedCounter value={stats.linesOfCode} />
                 </p>
               </div>

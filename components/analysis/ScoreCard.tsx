@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Trophy, Star, Zap, Award, TrendingUp } from "lucide-react";
+import { Trophy, Star, Zap, Award } from "lucide-react";
 import { ProgressRing } from "../ui/ProgressRing";
 import { GlassCard } from "../ui/GlassCard";
 import { ScoreBreakdown } from "@/types";
@@ -56,35 +56,35 @@ export function ScoreCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
     >
-      <GlassCard className="relative overflow-hidden" padding="xl" hover={false}>
+      <GlassCard className="relative overflow-hidden" padding="2xl" hover={false}>
         {/* Background glow */}
         <div 
-          className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full blur-3xl opacity-30"
+          className="absolute -top-48 -right-48 w-[600px] h-[600px] rounded-full blur-3xl opacity-25"
           style={{ background: `radial-gradient(circle, ${config.glow}, transparent)` }}
         />
         <div 
-          className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full blur-3xl opacity-20"
+          className="absolute -bottom-48 -left-48 w-[600px] h-[600px] rounded-full blur-3xl opacity-15"
           style={{ background: `radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent)` }}
         />
 
         <div className="relative z-10">
           {/* Grid Layout - Score Left, Breakdown Right */}
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left Side - Score */}
-            <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+            {/* Left Side - Score (CENTERED within its column) */}
+            <div className="flex flex-col items-center text-center">
               {/* Score Ring */}
               <motion.div
-                className="mb-8"
+                className="mb-10"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", delay: 0.3 }}
               >
-                <ProgressRing progress={score} size={260} tier={tier} />
+                <ProgressRing progress={score} size={280} tier={tier} />
               </motion.div>
 
               {/* Repo name */}
               <motion.h2
-                className="text-4xl sm:text-5xl font-bold text-white mb-6 font-display"
+                className="text-4xl sm:text-5xl font-bold text-white mb-8 font-display"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
@@ -93,22 +93,22 @@ export function ScoreCard({
               </motion.h2>
 
               {/* Badges */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-4">
                 {/* Tier Badge */}
                 <motion.div
-                  className={`flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r ${config.gradient}`}
+                  className={`flex items-center gap-3 px-7 py-3.5 rounded-2xl bg-gradient-to-r ${config.gradient}`}
                   initial={{ scale: 0, rotate: -10 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: "spring", delay: 0.5 }}
-                  style={{ boxShadow: `0 0 40px ${config.glow}` }}
+                  style={{ boxShadow: `0 0 50px ${config.glow}` }}
                 >
                   <TierIcon className="w-6 h-6 text-white" />
-                  <span className="font-bold text-white text-lg">{tier} Tier</span>
+                  <span className="font-bold text-white text-xl">{tier} Tier</span>
                 </motion.div>
 
                 {/* Category Badge */}
                 <motion.div
-                  className="flex items-center gap-2 px-6 py-3 rounded-2xl border border-white/20 bg-white/5 backdrop-blur"
+                  className="flex items-center gap-2 px-6 py-3.5 rounded-2xl border border-white/20 bg-white/5 backdrop-blur"
                   initial={{ scale: 0, rotate: 10 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: "spring", delay: 0.6 }}
@@ -120,9 +120,9 @@ export function ScoreCard({
             </div>
 
             {/* Right Side - Breakdown */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               <motion.h3
-                className="text-xl font-semibold text-white/80 mb-8"
+                className="text-2xl font-semibold text-white/80 mb-10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -138,16 +138,16 @@ export function ScoreCard({
                   transition={{ delay: 0.6 + index * 0.1 }}
                   className="group"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{item.icon}</span>
-                      <span className="text-white/70 font-medium">{item.label}</span>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                      <span className="text-3xl">{item.icon}</span>
+                      <span className="text-white/70 font-medium text-lg">{item.label}</span>
                     </div>
-                    <span className="text-white font-bold font-mono text-lg">
+                    <span className="text-white font-bold font-mono text-xl">
                       {item.value}<span className="text-white/40">/{item.max}</span>
                     </span>
                   </div>
-                  <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-4 bg-white/5 rounded-full overflow-hidden">
                     <motion.div
                       className={`h-full rounded-full bg-gradient-to-r ${item.color} relative`}
                       initial={{ width: 0 }}

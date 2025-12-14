@@ -1,3 +1,4 @@
+//components/landing/Hero.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -179,6 +180,8 @@ export function Hero() {
             </motion.div>
           </motion.div>
         </div>
+
+        
       </div>
 
       {/* Feature cards - With proper spacing */}
