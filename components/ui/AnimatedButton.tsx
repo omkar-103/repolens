@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { ReactNode, ButtonHTMLAttributes } from "react";
+import { ReactNode } from "react";
 
-interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface AnimatedButtonProps
+  extends Omit<HTMLMotionProps<"button">, "ref"> {
   children: ReactNode;
   variant?: "primary" | "secondary" | "ghost" | "outline";
   size?: "sm" | "md" | "lg";
@@ -60,6 +61,8 @@ export function AnimatedButton({
     lg: "px-8 py-4 text-lg rounded-2xl gap-3",
   };
 
+  const isDisabled = disabled || loading;
+
   return (
     <motion.button
       className={cn(
@@ -69,12 +72,12 @@ export function AnimatedButton({
         sizes[size],
         className
       )}
-      whileHover={{ scale: disabled || loading ? 1 : 1.05 }}
-      whileTap={{ scale: disabled || loading ? 1 : 0.95 }}
-      disabled={disabled || loading}
+      whileHover={{ scale: isDisabled ? 1 : 1.05 }}
+      whileTap={{ scale: isDisabled ? 1 : 0.95 }}
+      disabled={isDisabled}
       {...props}
     >
-      {/* Button content */}
+      {/* Content */}
       <span className="relative z-10 flex items-center gap-2">
         {loading ? (
           <>
@@ -93,7 +96,7 @@ export function AnimatedButton({
         )}
       </span>
 
-      {/* Ripple effect on hover for primary */}
+      {/* Ripple effect */}
       {variant === "primary" && !loading && (
         <motion.span
           className="absolute inset-0 z-0"

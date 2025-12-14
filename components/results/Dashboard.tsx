@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Share2, Github } from "lucide-react";
+import { ArrowLeft, Share2, Github, Code2, Heart } from "lucide-react";
 import { ScoreCard } from "../analysis/ScoreCard";
 import { SummarySection } from "../analysis/SummarySection";
 import { RoadmapSection } from "../analysis/RoadmapSection";
@@ -83,8 +83,9 @@ export function Dashboard({ result, onBack }: DashboardProps) {
 
         {/* Main Content with GENEROUS SPACING */}
         <main className="full-width-container">
+          
           {/* SECTION 1: Score - Hero Level */}
-          <section className="py-16 sm:py-20">
+          <section className="pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pt-32 lg:pb-36">
             <ScoreCard
               score={result.score}
               tier={result.tier}
@@ -94,11 +95,13 @@ export function Dashboard({ result, onBack }: DashboardProps) {
             />
           </section>
 
-          {/* STRONG DIVIDER */}
-          <div className="section-divider-strong" />
+          {/* DIVIDER 1 */}
+          <div className="py-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
+          </div>
 
           {/* SECTION 2: AI Analysis */}
-          <section className="py-12 sm:py-16">
+          <section className="pt-20 pb-24 sm:pt-24 sm:pb-28 lg:pt-28 lg:pb-32">
             <SummarySection
               summary={result.summary}
               strengths={result.strengths}
@@ -106,24 +109,71 @@ export function Dashboard({ result, onBack }: DashboardProps) {
             />
           </section>
 
-          {/* STRONG DIVIDER */}
-          <div className="section-divider-strong" />
+          {/* DIVIDER 2 */}
+          <div className="py-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+          </div>
 
           {/* SECTION 3: Roadmap */}
-          <section className="py-12 sm:py-16">
+          <section className="pt-20 pb-24 sm:pt-24 sm:pb-28 lg:pt-28 lg:pb-32">
             <RoadmapSection roadmap={result.roadmap} />
           </section>
 
-          {/* STRONG DIVIDER */}
-          <div className="section-divider-strong" />
+          {/* DIVIDER 3 */}
+          <div className="py-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+          </div>
 
           {/* SECTION 4: Stats */}
-          <section className="py-12 sm:py-16">
+          <section className="pt-20 pb-24 sm:pt-24 sm:pb-28 lg:pt-28 lg:pb-32">
             <StatsCards stats={result.stats} />
           </section>
+
         </main>
 
-      
+        {/* FOOTER */}
+        <footer className="border-t border-white/5 mt-16">
+          <div className="h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+          
+          <div className="full-width-container py-16 sm:py-20">
+            <div className="flex flex-col items-center gap-8">
+              
+              {/* Logo */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                  <Code2 className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  RepoLens
+                </span>
+              </div>
+
+              {/* Creator */}
+              <div className="flex flex-col items-center text-center">
+                <p className="text-white/30 text-sm flex items-center gap-1.5 mb-1">
+                  Built with <Heart className="w-3 h-3 text-red-400 fill-red-400" /> by
+                </p>
+                <p className="text-white font-medium">Omkar Parelkar</p>
+              </div>
+
+              {/* Analyze Another Button */}
+              <motion.button
+                onClick={onBack}
+                className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 text-white font-semibold shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Analyze Another Repository
+              </motion.button>
+
+              {/* Copyright */}
+              <p className="text-white/20 text-sm">
+                © {new Date().getFullYear()} RepoLens. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </footer>
+
       </motion.div>
     </div>
   );
